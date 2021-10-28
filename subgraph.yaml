@@ -1,0 +1,53 @@
+specVersion: 0.0.2
+description: Polkamine for Ethereum
+repository: https://github.com/Mine-Blockchain/polkamine-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: PolkaminePoolManager
+    network: ropsten
+    source:
+      address: "0x141b30baa729e7324Ed30A7a106EfF4D24a8d738"
+      abi: PolkaminePoolManager
+      startBlock: 11000000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Pool
+        - UserStake
+        - PoolStake
+      abis:
+        - name: PolkaminePoolManager
+          file: ./abis/PolkaminePoolManager.json
+      eventHandlers:
+        - event: AddPool(uint256,indexed address,indexed address)
+          handler: handleAddPool
+        - event: RemovePool(uint256)
+          handler: handleRemovePool
+        - event: StakeChange(uint256,indexed address,uint256,uint256)
+          handler: handleStakeChange
+      file: ./src/PolkaminePoolManager.ts
+  - kind: ethereum/contract
+    name: PolkamineRewardDistributor
+    network: ropsten
+    source:
+      address: "0xD411Fcd301daF7c1E7a12541B8a474Dc12c886F9"
+      abi: PolkamineRewardDistributor
+      startBlock: 11000000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - UserClaim
+        - PoolClaim
+      abis:
+        - name: PolkamineRewardDistributor
+          file: ./abis/PolkamineRewardDistributor.json
+      eventHandlers:
+        - event: Claim(indexed address,indexed uint256,indexed address,uint256,address,uint256,uint256)
+          handler: handleClaim
+      file: ./src/PolkamineRewardDistributor.ts

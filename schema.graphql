@@ -1,0 +1,40 @@
+type Pool @entity {
+  id: ID!
+  depositToken: Bytes!
+  rewardToken: Bytes!
+  deprecated: Boolean!
+}
+
+type PoolStake @entity {
+  id: ID!
+  poolId: BigInt!
+  fromAmount: BigInt!
+  toAmount: BigInt!
+  updatedBy: Bytes!
+  updatedAt: BigInt!
+}
+
+type PoolClaim @entity {
+  id: ID!
+  poolId: BigInt!
+  claimedAmount: BigInt!
+  claimedBy: Bytes!
+  claimedAt: BigInt!
+}
+
+type UserStake @entity {
+  id: ID!
+  user: Bytes!
+  poolId: BigInt!
+  fromAmount: BigInt!
+  toAmount: BigInt!
+  updatedAt: BigInt!
+}
+
+type UserClaim @entity {
+  id: ID!
+  user: Bytes!
+  poolId: BigInt!
+  claimedAmount: BigInt!
+  claimedAt: BigInt!
+}
